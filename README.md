@@ -14,7 +14,7 @@ Leaflet is open-source, free, easy to learn, well-documented, has a large commun
 
 ### Main learning objectives
 
-The goals of this session are to (1) equip you with conceptual knowledge about the core features and applications on the leaflet package, (2) show you the basic steps of creating interactive maps in R, and (3) provide you with practice material as well as some further readings.
+The goals of this session are to (1) equip you with conceptual knowledge about the core features and applications of the leaflet package, (2) show you the basic steps of creating interactive maps in R, and (3) provide you with practice material as well as some further readings.
 
 ## Instructors
 
