@@ -10,7 +10,7 @@ This session will introduce you to creating interactive maps with the leaflet pa
 
 Leaflet is one of the most popular open-source JavaScript libraries for creating interactive maps. It's used by websites ranging from The New York Times and The Washington Post to GitHub and Flickr, as well as [GIS](https://en.wikipedia.org/wiki/Geographic_information_system) specialists like OpenStreetMap and Mapbox.
 
-Leaflet is open-source, free, easy to learn, well-documented, has a large community, and can be extended with lots of plugins. The best thing about it? You don't need to know JavaScript. The leaflet package in R makes it very easy to create and integrate Leaflet maps in R.
+Leaflet is open-source, free, easy to learn, well-documented, has a large community, and can be extended with lots of plugins. The best thing about it? You don't need to know how to write JavaScript. The leaflet package in R makes it very easy to create and integrate Leaflet maps in R.
 
 ### Main learning objectives
 
