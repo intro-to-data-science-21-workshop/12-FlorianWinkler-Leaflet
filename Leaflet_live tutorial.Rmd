@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Who doesn't love maps?
 
-[Leaflet](http://rstudio.github.io/leaflet/) is one of the most popular open-source [JavaScript](https://leafletjs.com/) libraries for creating interactive maps. It's used by websites ranging from the New York Times and the Washington Post to GitHub and Flickr, as well as [GIS](https://en.wikipedia.org/wiki/Geographic_information_system) specialists like OpenStreetMap and Mapbox. As aspiring data scientists, you can use leaflet's interactive maps to help visualize and communicate findings from your research and projects.
+[Leaflet](http://rstudio.github.io/leaflet/) is one of the most popular open-source [JavaScript](https://leafletjs.com/) libraries for creating interactive maps. It's used by websites ranging from the New York Times and Washington Post to GitHub and Flickr, as well as [GIS](https://en.wikipedia.org/wiki/Geographic_information_system) specialists like OpenStreetMap and Mapbox. As aspiring data scientists, leaflet can help you visualize and communicate findings from your research and projects through interactive maps.
 
 Leaflet is open-source, free, easy to learn, well-documented, has a large community, and can be extended with lots of plugins. The best thing about it? You don't need to know JavaScript. The Leaflet package in R makes it very easy to create and integrate Leaflet maps in R.
 
@@ -105,18 +105,18 @@ For now, we'll stick with the "CartoDB.Voyager" basemap (from our second map).
 
 # Our Data: COVID-19 in Europe
 
-To show you a real-world example of how we can use Leaflet to visualize data in maps, we are going to work with COVID data from European countries. We've compiled a small data set from the [COVID-19 Data Repository](https://github.com/CSSEGISandData/COVID-19) hosted by the Johns Hopkins University (JHU) that can be downloaded from our GitHub workshop repository (credits to Riddhiman on the [R'tichoke blog](https://rtichoke.netlify.app/post/covid_visualisation_using_leaflet/) for providing a summarized version of the JHU data set).
+To show you a real-world example of how we can create and use Leaflet maps, we're going to visualize COVID data from European countries. We've compiled a small data set from the [COVID-19 Data Repository](https://github.com/CSSEGISandData/COVID-19) hosted by the Johns Hopkins University (JHU) that can be downloaded from our workshop repository (credits to Riddhiman on the [R'tichoke blog](https://rtichoke.netlify.app/post/covid_visualisation_using_leaflet/) for providing a summarized version of the JHU data set).
 
 ```{r}
 europe <- read.csv('leaflet_covid_data.csv')
 glimpse(europe)
 ```
 
+Note that we need **spatial data** to create maps that are meaningful and informative. In our example, we use **latitude and longitude** data for specific locations (note the latitude and longitude variables in the data set). However, spatial data can also exist in a variety of other formats and can contain more than just location-specific information. For a list of data formats that leaflet can work with, see [here](http://rstudio.github.io/leaflet/map_widget.html#the-data-object).
+
 # Markers
 
-We can use markers to call out points on a map. Marker locations are expressed in latitude/longitude coordinates, and can either appear as icons or as circles.
-
-Icon markers are added using the `addMarkers` function. Their default appearance is a dropped pin.
+We can use markers to call out points on a map. Marker locations are expressed in latitude/longitude coordinates, and can either appear as icons or as circles. Icon markers are added using the `addMarkers` function. Their default appearance is a dropped pin.
 
 ```{r}
 markers <- europe %>% 
@@ -131,7 +131,7 @@ markers
 
 # Labels
 
-As with most layer functions, the `label` option can be used to display a text label. A label is a textual or HTML content that can be attached to markers and shapes to be always displayed or displayed on mouse over. Unlike popups (see one step below), you don't need to click a marker for the label to be shown.
+The `label` option can be used to display a text label. A label is a textual or HTML content that can be attached to markers and shapes to be always displayed or displayed on mouse over. Unlike popups (one step below), you don't need to click a marker for the label to be shown.
 
 ```{r}
 labels <- europe %>% 
@@ -147,7 +147,7 @@ labels
 
 # Popups
 
-The `popup` argument can be used to add a message to be displayed on click. Popups are small boxes containing arbitrary HTML, that point to a specific point on the map.
+The `popup` argument can be used to add a message to be displayed on click. Popups are small boxes containing HTML that point to a specific point on the map. We want popups to show some COVID data per country, such as confirmed cases, deaths and fatality rates.
 
 ```{r}
 popups <- europe %>% 
