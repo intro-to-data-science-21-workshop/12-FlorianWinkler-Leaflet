@@ -18,13 +18,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Who doesn't love maps?
 
-[Leaflet](http://rstudio.github.io/leaflet/) is one of the most popular open-source [JavaScript](https://leafletjs.com/) libraries for creating interactive maps. It's used by websites ranging from the New York Times and Washington Post to GitHub and Flickr, as well as [GIS](https://en.wikipedia.org/wiki/Geographic_information_system) specialists like OpenStreetMap and Mapbox. As aspiring data scientists, leaflet can help you visualize and communicate findings from your research and projects through interactive maps.
+Welcome to our live tutorial on creating interactive maps with [Leaflet](http://rstudio.github.io/leaflet/)!
 
-Leaflet is open-source, free, easy to learn, well-documented, has a large community, and can be extended with lots of plugins. The best thing about it? You don't need to know JavaScript. The Leaflet package in R makes it very easy to create and integrate Leaflet maps in R.
+Now that you've heard us explain *WHY*, *WHEN* and *HOW* to use Leaflet, let's try to create our first interactive map in R ourselves.
 
 ## Motivation
 
-Are you ready to create this interactive map of COVID cases across Europe in just under 20 minutes? 😎
+Are you ready to create this interactive map of COVID-19 cases across Europe in just 15 minutes? 😎
 
 ![](motivation.png "covid cases europe")
 
@@ -32,7 +32,7 @@ Yes, you're right. This is not interactive. Well, this is just a screenshot (for
 
 ## Installation
 
-To install the Leaflet package in R, run this command at your R prompt:
+To install the Leaflet package in R, run the familiar command to install packages at your R prompt:
 
 ```{r eval=FALSE}
 install.packages("leaflet")
@@ -42,7 +42,7 @@ Once installed, you can use the Leaflet package at your R console, in R Markdown
 
 ## Loading Packages
 
-Next, we're loading all the packages that we are going to use throughout this tutorial.
+Next, we're loading all the packages that we're going to use throughout this tutorial.
 
 ```{r, message = FALSE}
 library(leaflet)
@@ -51,7 +51,9 @@ library(scales)
 library(lubridate)
 ```
 
-# Basic Syntax: Your First Map
+# Recall from Presentation
+
+## Basic Syntax
 
 You create a Leaflet map with these basic steps:
 
@@ -73,13 +75,15 @@ first_map <- leaflet() %>% # leaflet works with the pipe operator
 first_map
 ```
 
-# Basemaps
+The result is an interactive map (also called a "*slippy*" map in the geospatial jargon): Try using the plus and minus buttons to zoom in and out, and click on the map to pan around the map.
 
-## Default (OpenStreetMap) Tiles
+## Basemaps
+
+### Default (OpenStreetMap) Tiles
 
 Leaflet supports basemaps (i.e., the underlying map you're working with) using [map tiles](https://www.mapbox.com/guides/how-web-maps-work/) (this is also how Google Maps works in principle). The easiest way to add map tiles is by calling `addTiles()` with no arguments; by default, [OpenStreetMap](https://www.openstreetmap.org/) tiles are used.
 
-## Third-Party Tiles
+### Third-Party Tiles
 
 Alternatively, you can also use other basemaps for your projects. Many popular free third-party basemaps can be added using the `addProviderTiles()` function (see here for a collection of [basemaps](http://leaflet-extras.github.io/leaflet-providers/preview/index.html) to choose from). Let's try out "CartoDB.Voyager".
 
@@ -103,6 +107,27 @@ third_map
 
 For now, we'll stick with the "CartoDB.Voyager" basemap (from our second map).
 
+## Map Methods
+
+You can manipulate the attributes of a map widget using a series of methods and options.
+
+-   `setView()` sets the center of the map view and the zoom level;
+
+-   `fitBounds()` fits the view into the rectangle `[lng1, lat1]` -- `[lng2, lat2]`;
+
+-   `clearBounds()` clears the bound, so that the view will be automatically determined by the range of latitude/longitude data in the map layers if provided.
+
+To keep it simple for now, we're going to add an `options` argument in our `leaflet()` function that will set a minimum and maximum zoom level in our map.
+
+```{r}
+second_map <- second_map %>% 
+  leaflet(options = leafletOptions(minZoom = 13, maxZoom = 18)) %>% # Sets minimum and maximum zoom levels
+  addProviderTiles(providers$CartoDB.Voyager) %>%
+  addMarkers(lng = 13.3893204, lat = 52.5128055, popup = 'Hertie School')
+
+second_map
+```
+
 # Our Data: COVID-19 in Europe
 
 To show you a real-world example of how we can create and use Leaflet maps, we're going to visualize COVID data from European countries. We've compiled a small data set from the [COVID-19 Data Repository](https://github.com/CSSEGISandData/COVID-19) hosted by the Johns Hopkins University (JHU) that can be downloaded from our workshop repository (credits to Riddhiman on the [R'tichoke blog](https://rtichoke.netlify.app/post/covid_visualisation_using_leaflet/) for providing a summarized version of the JHU data set).
@@ -114,85 +139,49 @@ glimpse(europe)
 
 Note that we need **spatial data** to create maps that are meaningful and informative. In our example, we use **latitude and longitude** data for specific locations (note the latitude and longitude variables in the data set). However, spatial data can also exist in a variety of other formats and can contain more than just location-specific information. For a list of data formats that leaflet can work with, see [here](http://rstudio.github.io/leaflet/map_widget.html#the-data-object).
 
-# Markers
+# Confirmed Cases Across Countries
 
-We can use markers to call out points on a map. Marker locations are expressed in latitude/longitude coordinates, and can either appear as icons or as circles. Icon markers are added using the `addMarkers` function. Their default appearance is a dropped pin.
+Let's say we wanted to visualize how confirmed COVID cases were distributed across European countries in September 2021 on a map. We can do so by adding circle markers that vary in the size of their radius according to each country's number of confirmed cases. Again, credits to Riddhiman on the [R'tichoke blog](https://rtichoke.netlify.app/post/covid_visualisation_using_leaflet/) for the inspiration (we're only focusing on Europe here though).
 
-```{r}
-markers <- europe %>% 
-  filter(mon_yr == "2021-09") %>% 
-  leaflet(options = leafletOptions(minZoom = 3, maxZoom = 5)) %>%
-  addProviderTiles(providers$CartoDB.Voyager) %>% 
-  addMarkers(lng = ~Longitude, 
-             lat = ~Latitude)
+## Step 1: Add Circle Markers
 
-markers
-```
+We can use markers to call out points on a map. Marker locations are expressed in latitude/longitude coordinates, and can either appear as icons or as circles. We're going to use circle markers to add a radius argument later on.
 
-# Labels
-
-The `label` option can be used to display a text label. A label is a textual or HTML content that can be attached to markers and shapes to be always displayed or displayed on mouse over. Unlike popups (one step below), you don't need to click a marker for the label to be shown.
+The `popup` argument can be used to add a message to be displayed on click. Popups are small boxes containing HTML that point to a specific point on the map. We want popups to show selected COVID data per country, such as confirmed cases, deaths and fatality rates.
 
 ```{r}
-labels <- europe %>% 
+cases_circles <- europe %>% 
+  
+  # Select only confirmed cases as of September 2021
   filter(mon_yr == "2021-09") %>% 
-  leaflet(options = leafletOptions(minZoom = 3, maxZoom = 5)) %>%
+  
+  # Call Leaflet function and add map tiles
+  leaflet(options = leafletOptions(minZoom = 3, maxZoom = 5)) %>% 
   addProviderTiles(providers$CartoDB.Voyager) %>% 
-  addMarkers(lng = ~Longitude, 
-             lat = ~Latitude,
-             label = ~country)
-
-labels
-```
-
-# Popups
-
-The `popup` argument can be used to add a message to be displayed on click. Popups are small boxes containing HTML that point to a specific point on the map. We want popups to show some COVID data per country, such as confirmed cases, deaths and fatality rates.
-
-```{r}
-popups <- europe %>% 
-  filter(mon_yr == "2021-09") %>% 
-  leaflet(options = leafletOptions(minZoom = 3, maxZoom = 5)) %>%
-  addProviderTiles(providers$CartoDB.Voyager) %>% 
-  addMarkers(lng = ~Longitude, 
-             lat = ~Latitude, 
-             popup = ~paste0("<b>", country, "</b><br>", 
+  
+  # Add circle markers (same radius for now)
+  addCircleMarkers(lng = ~Longitude, 
+                   lat = ~Latitude,
+                   popup = ~paste0("<b>", country, "</b><br>", 
                              "Confirmed Cases: <b>", confirmed, "</b><br>", 
                              "Deaths: <b>", deaths, "</b><br>", 
                              "Fatality Ratio: <b>", fatal_rate, "</b><br>"))
 
-popups
+cases_circles
 ```
 
-If you click on a marker, you will see that we have successfully created popups for each country marker. However, the COVID numbers are not presented in the most interpretable format as they are shown as raw numeric values (i.e., no thousands separator, no percentage values for fataility ratio). In the next step, we will refine our popup text by transforming our data using the scales package.
+If you click on a circle marker, you will see that we have successfully created popups for each country. However, the COVID data is not presented in the most interpretable format as they are shown as raw numeric values (i.e., no thousands separator, no percentage values for fataility ratio).
+
+In the next step, we will refine our popup text by transforming our data using the scales package.
 
 ```{r}
 europe <- europe %>% 
   mutate(confirmed_readable = scales::label_number_si(accuracy = 0.1)(confirmed), 
        deaths_readable = scales::label_number_si(accuracy = 0.1)(deaths), 
        fatal_readable = scales::percent(fatal_rate, accuracy = 0.1))
-
-popups_clean <- europe %>% 
-  filter(mon_yr == "2021-09") %>% 
-  leaflet(options = leafletOptions(minZoom = 3, maxZoom = 5)) %>%
-  addProviderTiles(providers$CartoDB.Voyager) %>% 
-  addMarkers(lng = ~Longitude, 
-             lat = ~Latitude, 
-             popup = ~paste0("<b>", country, "</b><br>", 
-                             "Confirmed Cases: <b>", confirmed_readable, "</b><br>", 
-                             "Deaths: <b>", deaths_readable, "</b><br>", 
-                             "Fatality Ratio: <b>", fatal_readable, "</b><br>"))
-
-popups_clean
 ```
 
-# Circle Markers
-
-Let's say we wanted to visualize how confirmed COVID cases were distributed across European countries in September 2021 on a map. We can do so by adding circle markers that change in the size of their radius per confirmed cases. Again, credits to Riddhiman on the [R'tichoke blog](https://rtichoke.netlify.app/post/covid_visualisation_using_leaflet/) for the inspiration (we're only focusing on Europe here though).
-
-## Confirmed Cases Across Countries
-
-### Step 1: Add Circle Markers
+Let's try again to add circle markers with (more interpretable) popups!
 
 ```{r}
 cases_circles <- europe %>% 
@@ -215,7 +204,9 @@ cases_circles <- europe %>%
 cases_circles
 ```
 
-### Step 2: Change circle radius according to COVID cases
+## Step 2: Adjust Circle Radius
+
+To visualize COVID cases in the shape of circle markers that vary in the size of their radius, we need to create a new "radius" variable that scales confirmed cases per country.
 
 ```{r}
 cases_circles <- europe %>% 
@@ -243,7 +234,9 @@ cases_circles <- europe %>%
 cases_circles
 ```
 
-### Step 3: Refine appearance of circles (color and transparency)
+## Step 3: Refine Design of Circle Markers
+
+Using ***color*** arguments in the `addCircleMarkers` function, let's specify colors and outlines for each circle marker. I am setting ***stroke*** to TRUE to include an outline, adjust ***weight*** to define the outline's weight and set a ***color*** for the outline's color (black in this case). Next, I am defining the color of the circle filling with ***fillColor*** (grey in this case) and setting ***fillOpacity*** to apply a transparency effect.
 
 ```{r}
 cases_circles <- europe %>% 
@@ -259,31 +252,61 @@ cases_circles <- europe %>%
                              "Fatality Ratio: <b>", fatal_readable, "</b><br>"),
                    radius = ~rad,
                    
-                   weight = 0.7, # What does this do?
-                   stroke =T,  # What does this do?
-                   color = "#000000", # What does this do?
-                   fillColor = "#525c63", # What does this do?
-                   fillOpacity = 0.3) # What does this do?
+                   stroke = TRUE, # Include a circle outline
+                   weight = 0.7, # Define the circle outline's weight
+                   color = "#000000", # Define the circle outline's color
+                   fillColor = "#525c63", # Define the color of the circle filling
+                   fillOpacity = 0.3) # Apply transparency to the circle filling
 
 cases_circles
 ```
 
-Here you go! You just created an interactive map to visualize COVID data across Europe -- with only a few lines of code.
+Here you go! You just created an interactive map to visualize COVID data across Europe -- with only a few lines of code. Try clicking on one of the circle markers. What was the fatality rate in France in September 2021? Did Denmark or Hungary have more COVID cases in September?
 
-The great thing about leaflet is that maps are interactive: Try clicking on one of the circle markers. What was the fatality ratio in France in September 2021? Did Denmark or Hungary have more COVID cases in September? Hint for Hungary: Try zooming in. Magic!
-
-# Multiple Layers
+# Confirmed Cases over Time
 
 If time permits:
 
-Let's say we wanted to know how COVID cases were not only distributed across countries, but also at different points in time. Leaflet has an interesting feature that allows us to add layers to the same map and switch between them using the the `group` argument.
+Let's say we wanted to know how COVID cases were not only distributed across countries, but also at different points in time. Leaflet has an interesting feature that allows us to **add layers** to the same map and switch between them using the the `group` argument and the `addLayersControl()` function.
 
-## Confirmed Cases over Time
+## Step 1: Group Layers by Date
+
+```{r}
+cases_over_time_layers <- europe %>% 
+  group_by(date) %>% 
+  filter(mon_yr != '2020-02') %>% 
+  mutate(rad = sqrt(confirmed/max(confirmed)) * 60) %>% # Circle radius (arbitrary scaling function for dramatic effect)
+  leaflet(options = leafletOptions(minZoom = 3, maxZoom = 6, )) %>% # Leaflet map
+  addProviderTiles(providers$CartoDB.Voyager) %>% 
+  addCircleMarkers(lng = ~Longitude, 
+                   lat = ~Latitude, 
+                   radius = ~rad, 
+                   popup = ~text,
+                   weight = 0.7,
+                   stroke = T, 
+                   color = '#000000',
+                   fillColor = '#525c63', 
+                   fillOpacity = 0.5, 
+                   group = ~date, 
+                   labelOptions = labelOptions(noHide = F))
+
+cases_over_time_layers
+```
+
+The result looks messy. What happened? Our code above printed all layers on one single map layer.
+
+To filter layers, we need to make use of Leaflet's layers control feature that allows us to toggle the visibility of groups. Using the `addLayersControl()` function, we can switch between individual layers and hide all others.
+
+## Step 2: Create Base Groups
 
 ```{r}
 vec <- seq.Date(as.Date('2020-03-01'), to = as.Date('2021-09-01'), by = '1 month')
 vec <- as.character(vec)
+```
 
+## Step 3: Add Layers Control
+
+```{r}
 cases_over_time_layers <- europe %>% 
   group_by(date) %>% 
   filter(mon_yr != '2020-02') %>% 
@@ -308,42 +331,24 @@ cases_over_time_layers <- europe %>%
 cases_over_time_layers
 ```
 
+Voilà! Now you can switch between individual layers (in our case: months) and hide all other layers.
+
 Time for analysis: Which countries were most affected by COVID in early 2020? How has it spread across Europe since then?
 
 # Further resources
 
 If we sparked your interest in using Leaflet for R, make sure to check out the following resources:
 
--   Step-by-step [documentation](http://rstudio.github.io/leaflet/) for Leaflet in R (including code, examples and further links).
+-   Clear and comprehensive [documentation](http://rstudio.github.io/leaflet/) for Leaflet in R (including code, examples and further links).
 
 -   Leaflet [cheat sheet](https://ugoproto.github.io/ugo_r_doc/pdf/leaflet-cheat-sheet.pdf)
 
--   Youtube [tutorial](https://www.youtube.com/playlist?list=PLmFi_ou2WwcEyPq7Y9DvzFRLlp9-XvFDb) for basic Leaflet features (e.g., markers, popups, labels and polylines)
+-   Hands-on [Youtube tutorial](https://www.youtube.com/playlist?list=PLmFi_ou2WwcEyPq7Y9DvzFRLlp9-XvFDb) for basic Leaflet features (e.g., markers, popups, labels and polylines)
 
 -   Collection of free [third-party basemaps](http://leaflet-extras.github.io/leaflet-providers/preview/index.html) (map tiles) for Leaflet
 
--   Leaflet website for [JavaScript](https://leafletjs.com/) (for those of you interested in the more advanced side of things).
+-   Leaflet website for [JavaScript](https://leafletjs.com/) (for those of you interested in the more advanced side of things)
 
 # Sources
 
-This tutorial drew heavily on Riddhiman's article on the [R'tichoke blog](https://rtichoke.netlify.app/post/covid_visualisation_using_leaflet/) (for ideas, code and data) as well as leaflet's [documentation for R](http://rstudio.github.io/leaflet/) (for explanations of leaflet features and code).
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
+This tutorial drew heavily on Riddhiman's article on the [R'tichoke blog](https://rtichoke.netlify.app/post/covid_visualisation_using_leaflet/) (for the general idea, code and data) as well as leaflet's [documentation for R](http://rstudio.github.io/leaflet/) (for explanations of leaflet features and code).
