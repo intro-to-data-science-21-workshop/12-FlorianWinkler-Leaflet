@@ -20,14 +20,14 @@ The goals of this session are to (1) equip you with motivation and conceptual kn
 
 ## Instructors
 
--   Florian Winkler ([LinkedIn](https://www.linkedin.com/in/florian-winkler/))
--   Jiayu Yang ([LinkedIn](https://www.linkedin.com/in/jiayu-yang-b30b58194/))
+-   Florian Winkler, MDS ([LinkedIn](https://www.linkedin.com/in/florian-winkler/))
+-   Jiayu Yang, MDS ([LinkedIn](https://www.linkedin.com/in/jiayu-yang-b30b58194/))
 
 ## Further resources
 
 -   Comprehensive [documentation for Leaflet in R](http://rstudio.github.io/leaflet/) (including code, examples and further references).
 -   Leaflet [cheat sheet](https://ugoproto.github.io/ugo_r_doc/pdf/leaflet-cheat-sheet.pdf)
--   Hands-on [Youtube tutorial](https://www.youtube.com/playlist?list=PLmFi_ou2WwcEyPq7Y9DvzFRLlp9-XvFDb) for basic Leaflet features (e.g., markers, popups, labels and polylines)
+-   Hands-on [YouTube tutorial](https://www.youtube.com/playlist?list=PLmFi_ou2WwcEyPq7Y9DvzFRLlp9-XvFDb) for basic Leaflet features (e.g., markers, popups, labels and polylines)
 -   Collection of free [third-party basemaps](http://leaflet-extras.github.io/leaflet-providers/preview/index.html) (map tiles) for Leaflet
 -   Leaflet website for [JavaScript](https://leafletjs.com/) (for those of you interested in the more advanced side of things)
 
