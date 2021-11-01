@@ -8,7 +8,7 @@ This repository provides materials for a session on the Leaflet package in R tha
 
 This session will introduce you to creating interactive maps with the Leaflet package in R.
 
-Leaflet is one of the most popular open-source JavaScript libraries for creating interactive maps. It's used by websites ranging from the New York Times and Washington Post to GitHub and Flickr. As aspiring data scientists, Leaflet helps you to visualize and communicate your findings in interactive maps.
+Leaflet is one of the most popular open-source JavaScript libraries for creating interactive maps. It's used by websites ranging from the New York Times and Washington Post to GitHub and Flickr. As aspiring data scientists, Leaflet helps you visualize and communicate your findings in interactive maps.
 
 Leaflet is free, open-source, well-documented, easy to learn, uses a familiar R framework (e.g., the pipe operator), and can be extended with lots of plugins. The best thing about it? You don't need to know how to write JavaScript. The Leaflet package in R makes it very easy to create and integrate Leaflet maps in R.
 
