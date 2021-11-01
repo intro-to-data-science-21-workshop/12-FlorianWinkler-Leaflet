@@ -21,7 +21,7 @@ The goals of this session are to (1) equip you with motivation and conceptual kn
 ## Instructors
 
 -   Florian Winkler, MDS ([LinkedIn](https://www.linkedin.com/in/florian-winkler/))
--   Jiayu Yang, MDS ([LinkedIn](https://www.linkedin.com/in/jiayu-yang-b30b58194/))
+-   Jiayu Yang, MDS
 
 ## Further resources
 
