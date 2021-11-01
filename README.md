@@ -25,7 +25,7 @@ The goals of this session are to (1) equip you with motivation and conceptual kn
 
 ## Further resources
 
--   Comprehensive [documentation for Leaflet in R](http://rstudio.github.io/leaflet/) (including code, examples and further references).
+-   Comprehensive [documentation for Leaflet in R](http://rstudio.github.io/leaflet/) (including code, examples and further references)
 -   Leaflet [cheat sheet](https://ugoproto.github.io/ugo_r_doc/pdf/leaflet-cheat-sheet.pdf)
 -   Hands-on [YouTube tutorial](https://www.youtube.com/playlist?list=PLmFi_ou2WwcEyPq7Y9DvzFRLlp9-XvFDb) for basic Leaflet features (e.g., markers, popups, labels and polylines)
 -   Collection of free [third-party basemaps](http://leaflet-extras.github.io/leaflet-providers/preview/index.html) (map tiles) for Leaflet
