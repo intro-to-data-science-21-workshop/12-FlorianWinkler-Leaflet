@@ -37,6 +37,6 @@ The material in this repository is made available under the [MIT license](http:/
 
 ## Statement of contributions
 
-**Florian Winkler** prepared the practice material and contents on presentation slides 3 to 9. He recorded the first part of the presentation video (slides 1 to 8, 7 minutes) and post-processed the recording.
+**Florian Winkler** prepared the practice material for the live tutorial and contents on presentation slides 3 to 9. He recorded the first part of the presentation video (slides 1 to 8, 7 minutes) and post-processed the recording.
 
 **Jiayu Yang** created the presentation slides' design and prepared contents on slides 10 to 21. He recorded the second part of the presentation video (slides 9 to 21, 8 minutes) and proofread the practice material.
