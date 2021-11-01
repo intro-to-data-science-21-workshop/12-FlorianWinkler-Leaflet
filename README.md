@@ -12,6 +12,8 @@ Leaflet is one of the most popular open-source JavaScript libraries for creating
 
 Leaflet is free, open-source, well-documented, easy to learn, uses a familiar R framework (e.g., the pipe operator), and can be extended with lots of plugins. The best thing about it? You don't need to know how to write JavaScript. The Leaflet package in R makes it very easy to create and integrate Leaflet maps in R.
 
+Our presentation slides can be downloaded as a PDF file [here](https://drive.google.com/file/d/1bIQ66rcz7j0OHyNB5vWVCMIcawFmR2ky/view?usp=sharing).
+
 ### Main learning objectives
 
 The goals of this session are to (1) equip you with motivation and conceptual knowledge about the core features and applications of the Leaflet package, (2) show you the basic steps of creating interactive maps in R, and (3) provide you with a live demonstration in the practice material as well as further resources.
